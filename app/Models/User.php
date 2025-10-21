@@ -53,4 +53,20 @@ class User extends Authenticatable
         return $this->hasMany(StockTransfer::class, 'created_by');
     }
 
+    public function createdDiscountSchemes()
+    {
+        return $this->hasMany(DiscountScheme::class, 'created_by');
+    }
+
+    public function createdVouchers()
+    {
+        return $this->hasMany(Voucher::class, 'created_by');
+    }
+
+    public function voucherRedemptions()
+    {
+        return $this->hasMany(VoucherRedemption::class);
+    }
+
+
 }

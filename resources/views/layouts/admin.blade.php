@@ -51,6 +51,15 @@
                         class="block rounded-md px-3 py-2 hover:bg-gray-100 {{ request()->routeIs('admin.stock.*') ? 'bg-gray-100 font-medium' : '' }}">
                         📦 Stok
                     </a>
+                    <a href="{{ route('admin.vouchers.index') }}"
+                        class="block rounded-md px-3 py-2 hover:bg-gray-100 {{ request()->routeIs('admin.vouchers.*') ? 'bg-gray-100 font-medium' : '' }}">
+                        🎟️ Voucher
+                    </a>
+                    <a href="{{ route('admin.discounts.index') }}"
+                        class="block rounded-md px-3 py-2 hover:bg-gray-100 {{ request()->routeIs('admin.discounts.*') ? 'bg-gray-100 font-medium' : '' }}">
+                        ⚖️ Diskon Otomatis
+                    </a>
+
                     <a href="#" class="block rounded-md px-3 py-2 hover:bg-gray-100">🧾 Transaksi</a>
                     <a href="#" class="block rounded-md px-3 py-2 hover:bg-gray-100">📊 Laporan</a>
                 </div>

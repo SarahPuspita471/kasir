@@ -12,6 +12,11 @@ use App\Http\Controllers\User\ReportsController;
 use App\Http\Controllers\Admin\StockTransferController;
 use App\Http\Controllers\Admin\ProductPriceController;
 use App\Http\Controllers\Admin\ProductBarcodeController;
+use App\Http\Controllers\User\DiscountApiController;
+use App\Http\Controllers\Admin\VoucherController;
+use App\Http\Controllers\Admin\DiscountSchemeController;
+use App\Http\Controllers\Admin\DiscountTierController;
+use App\Http\Controllers\User\CheckoutController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -44,6 +49,28 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         ->name('admin.products.barcode.preview');
     Route::get('/admin/products/{product}/barcode/download', [ProductBarcodeController::class, 'download'])
         ->name('admin.products.barcode.download');
+
+    // VOUCHERS
+    Route::get('/admin/vouchers', [VoucherController::class, 'index'])->name('admin.vouchers.index');
+    Route::get('/admin/vouchers/create', [VoucherController::class, 'create'])->name('admin.vouchers.create');
+    Route::post('/admin/vouchers', [VoucherController::class, 'store'])->name('admin.vouchers.store');
+    Route::get('/admin/vouchers/{voucher}/edit', [VoucherController::class, 'edit'])->name('admin.vouchers.edit');
+    Route::put('/admin/vouchers/{voucher}', [VoucherController::class, 'update'])->name('admin.vouchers.update');
+    Route::delete('/admin/vouchers/{voucher}', [VoucherController::class, 'destroy'])->name('admin.vouchers.destroy');
+    Route::patch('/admin/vouchers/{voucher}/toggle', [VoucherController::class, 'toggle'])->name('admin.vouchers.toggle');
+
+    // DISCOUNT SCHEMES
+    Route::get('/admin/discounts', [DiscountSchemeController::class, 'index'])->name('admin.discounts.index');
+    Route::get('/admin/discounts/create', [DiscountSchemeController::class, 'create'])->name('admin.discounts.create');
+    Route::post('/admin/discounts', [DiscountSchemeController::class, 'store'])->name('admin.discounts.store');
+    Route::get('/admin/discounts/{scheme}/edit', [DiscountSchemeController::class, 'edit'])->name('admin.discounts.edit');
+    Route::put('/admin/discounts/{scheme}', [DiscountSchemeController::class, 'update'])->name('admin.discounts.update');
+    Route::delete('/admin/discounts/{scheme}', [DiscountSchemeController::class, 'destroy'])->name('admin.discounts.destroy');
+
+    // TIERS (inline manage di halaman scheme)
+    Route::post('/admin/discounts/{scheme}/tiers', [DiscountTierController::class, 'store'])->name('admin.tiers.store');
+    Route::put('/admin/tiers/{tier}', [DiscountTierController::class, 'update'])->name('admin.tiers.update');
+    Route::delete('/admin/tiers/{tier}', [DiscountTierController::class, 'destroy'])->name('admin.tiers.destroy');
 });
 
 /*
@@ -63,4 +90,36 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/customers', [CustomersController::class, 'index'])->name('user.customers.index');
         Route::get('/reports', [ReportsController::class, 'index'])->name('user.reports.index');
     });
+
+    Route::post('/user/pos/discount/preview', [DiscountApiController::class, 'previewAuto'])
+        ->name('user.pos.discount.preview');
+
+    // Validasi voucher + hold redemption
+    Route::post('/user/pos/voucher/validate', [DiscountApiController::class, 'validateVoucher'])
+        ->name('user.pos.voucher.validate');
+
+    // Batalkan hold (mis. user ganti voucher / batal transaksi)
+    Route::post('/user/pos/voucher/void', [DiscountApiController::class, 'voidHeld'])
+        ->name('user.pos.voucher.void');
+
+    // POS data
+    Route::get('/user/pos/products', [\App\Http\Controllers\User\PosController::class, 'products'])
+        ->name('user.pos.products');
+
+    // Discount API (TAHAP 2, sudah ada)
+    Route::post('/user/pos/discount/preview', [DiscountApiController::class, 'previewAuto'])
+        ->name('user.pos.discount.preview');
+    Route::post('/user/pos/voucher/validate', [DiscountApiController::class, 'validateVoucher'])
+        ->name('user.pos.voucher.validate');
+    Route::post('/user/pos/voucher/void', [DiscountApiController::class, 'voidHeld'])
+        ->name('user.pos.voucher.void');
+
+    // CHECKOUT + STRUK
+    Route::post('/user/pos/checkout', [CheckoutController::class, 'store'])
+        ->name('user.pos.checkout');
+    Route::get('/user/sales/{sale}/receipt', [CheckoutController::class, 'receipt'])
+        ->name('user.sales.receipt');
+
+
 });
+

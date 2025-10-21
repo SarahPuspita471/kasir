@@ -77,3 +77,5 @@ class DiscountApiController extends Controller
             : response()->json(['status' => 'error', 'message' => 'Tidak bisa membatalkan.'], 422);
     }
 }
+
+

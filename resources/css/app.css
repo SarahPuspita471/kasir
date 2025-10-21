@@ -1,0 +1,133 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+@theme {
+    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+}
+:root {
+  --indigo: #4f46e5;            /* aksen utama */
+  --indigo-foreground: #ffffff; /* teks di atas indigo */
+  --text: #111827;              /* abu gelap */
+  --muted: #6b7280;             /* abu sedang */
+  --danger: #dc2626;            /* error merah lembut */
+
+  --radius-card: 16px;
+  --radius-ctl: 12px;
+
+  --shadow-soft: 0 10px 25px rgba(17, 24, 39, 0.08);
+  --shadow-hover: 0 12px 28px rgba(17, 24, 39, 0.12);
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --t-120: 120ms;
+  --t-180: 180ms;
+  --t-240: 240ms;
+}
+
+/* Animations */
+@keyframes fade-slide-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes micro-shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-2px); }
+  40% { transform: translateX(2px); }
+  60% { transform: translateX(-2px); }
+  80% { transform: translateX(2px); }
+}
+
+/* Utility classes */
+.anim-fade-slide-up { animation: fade-slide-up var(--t-240) var(--ease-out) both; }
+.anim-delay-1 { animation-delay: 60ms; }
+.anim-delay-2 { animation-delay: 120ms; }
+.anim-micro-shake { animation: micro-shake var(--t-180) var(--ease-out); }
+
+.card {
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-soft);
+  background: #fff;
+}
+.card:hover { box-shadow: var(--shadow-hover); transition: box-shadow var(--t-180) var(--ease-out); }
+
+.btn {
+  height: 44px;
+  border-radius: var(--radius-ctl);
+  transition: transform var(--t-120) var(--ease-out), box-shadow var(--t-120) var(--ease-out);
+}
+.btn:hover { transform: translateY(-1px) scale(1.01); }
+.btn:disabled { opacity: .7; pointer-events: none; }
+
+.input, .checkbox {
+  border-radius: var(--radius-ctl);
+}
+
+/* Accessible focus ring (fallback jika class ring tidak aktif) */
+.focus-ring:focus {
+  outline: 2px solid var(--indigo);
+  outline-offset: 2px;
+}
+
+/* Spinner kecil untuk tombol loading */
+@keyframes spinner { to { transform: rotate(360deg); } }
+.spinner {
+  width: 16px; height: 16px; border-radius: 9999px;
+  border: 2px solid rgba(255,255,255,.5);
+  border-top-color: var(--indigo-foreground);
+  animation: spinner 900ms linear infinite;
+}
+
+/* --- Layouts (admin & user) --- */
+.layout-shell { min-height: 100dvh; }
+
+/* Header */
+.header-blur {
+  backdrop-filter: saturate(180%) blur(8px);
+  background: rgba(255,255,255,.75);
+  box-shadow: 0 1px 0 rgba(17,24,39,.06);
+}
+
+/* Sidebar (admin) */
+.sidebar {
+  width: 260px;
+  transition: transform var(--t-180) var(--ease-out);
+}
+.sidebar-hidden { transform: translateX(-100%); }
+@media (min-width: 1024px) {
+  .sidebar-hidden { transform: translateX(0); }
+}
+
+/* Content card enter */
+.anim-card-in { animation: fade-slide-up var(--t-240) var(--ease-out) both; }
+/* Full-width shell */
+.layout-shell { min-height: 100dvh; }
+
+/* Header blur */
+.header-blur {
+  backdrop-filter: saturate(180%) blur(8px);
+  background: rgba(255,255,255,.75);
+  box-shadow: 0 1px 0 rgba(17,24,39,.06);
+}
+
+/* Sidebar */
+.sidebar { transition: transform var(--t-180) var(--ease-out); }
+.sidebar-hidden { transform: translateX(-100%); }
+@media (min-width: 1024px) { .sidebar-hidden { transform: translateX(0); } }
+
+/* Card enter */
+.anim-card-in { animation: fade-slide-up var(--t-240) var(--ease-out) both; }
+
+
+/* --- Tabs (User) --- */
+.tabs { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.tab {
+  display:inline-flex; align-items:center; height:40px; padding:0 12px;
+  border-radius: 9999px; white-space: nowrap; transition: background var(--t-120) var(--ease-out);
+}
+.tab:hover { background: rgba(79,70,229,.08); }               /* indigo-600 8% */
+.tab-active { background: rgba(79,70,229,.12); font-weight:600; color:#4f46e5; }
+

@@ -18,10 +18,12 @@ class Product extends Model
         'stok_kasir',
         'status_kasir',
         'synced_at',
+        'harga_jual',
     ];
 
     protected $casts = [
         'synced_at' => 'datetime',
+        'harga_jual' => 'decimal:2'
     ];
 
     // --- Accessors ---
@@ -35,4 +37,9 @@ class Product extends Model
     {
         return $this->hasMany(StockTransfer::class, 'kode_barang', 'kode_barang');
     }
+    public function getRouteKeyName(): string
+    {
+        return 'kode_barang';
+    }
+
 }

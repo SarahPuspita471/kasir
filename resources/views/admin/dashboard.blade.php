@@ -49,5 +49,6 @@
       <p class="text-sm text-gray-600">Lihat</p>
       <p class="mt-1 text-lg font-semibold">Ringkasan Penjualan</p>
     </a>
+    
   </div>
 @endsection

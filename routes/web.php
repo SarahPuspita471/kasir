@@ -10,6 +10,8 @@ use App\Http\Controllers\User\StockController;
 use App\Http\Controllers\User\CustomersController;
 use App\Http\Controllers\User\ReportsController;
 use App\Http\Controllers\Admin\StockTransferController;
+use App\Http\Controllers\Admin\ProductPriceController;
+use App\Http\Controllers\Admin\ProductBarcodeController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -35,6 +37,13 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     Route::get('/admin/stock', [StockTransferController::class, 'index'])->name('admin.stock.index');
     Route::post('/admin/stock/ambil', [StockTransferController::class, 'ambil'])->name('admin.stock.ambil');
+    Route::post('/admin/products/set-price', [ProductPriceController::class, 'update'])
+        ->name('admin.products.set-price');
+
+    Route::get('/admin/products/{product}/barcode/preview', [ProductBarcodeController::class, 'preview'])
+        ->name('admin.products.barcode.preview');
+    Route::get('/admin/products/{product}/barcode/download', [ProductBarcodeController::class, 'download'])
+        ->name('admin.products.barcode.download');
 });
 
 /*
@@ -44,6 +53,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 */
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [UserDashboard::class, 'index'])->name('user.dashboard');
+    Route::get('/user/pos', [PosController::class, 'index'])->name('user.pos.index');
+    Route::get('/user/pos/products', [PosController::class, 'products'])->name('user.pos.products'); // JSON
 
     Route::prefix('user')->group(function () {
         Route::get('/pos', [PosController::class, 'index'])->name('user.pos.index');

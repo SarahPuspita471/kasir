@@ -59,8 +59,14 @@
                         class="block rounded-md px-3 py-2 hover:bg-gray-100 {{ request()->routeIs('admin.discounts.*') ? 'bg-gray-100 font-medium' : '' }}">
                         ⚖️ Diskon Otomatis
                     </a>
+                    <a href="{{ route('admin.tax.edit') }}"
+                        class="block rounded-md px-3 py-2 hover:bg-gray-100 {{ request()->routeIs('admin.tax.*') ? 'bg-gray-100 font-medium' : '' }}">
+                        💰 Tax
+                    </a>
 
-                    <a href="#" class="block rounded-md px-3 py-2 hover:bg-gray-100">🧾 Transaksi</a>
+                    <a href="{{ route('admin.transactions.index') }}"
+                     class="block rounded-md px-3 py-2 hover:bg-gray-100 {{ request()->routeIs('admin.transactions.*') ? 'bg-gray-100 font-medium' : '' }}">🧾 Transaksi
+                    </a>
                     <a href="#" class="block rounded-md px-3 py-2 hover:bg-gray-100">📊 Laporan</a>
                 </div>
             </nav>

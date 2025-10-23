@@ -68,5 +68,32 @@ class User extends Authenticatable
         return $this->hasMany(VoucherRedemption::class);
     }
 
+    public function sales()
+    {
+        return $this->hasMany(\App\Models\Sale::class);
+    }
+
+    // app/Models/Sale.php
+    public function user()
+    {
+        return $this->belongsTo(\App\Models\User::class);
+    }
+
+    public function items()
+    {
+        return $this->hasMany(\App\Models\SaleItem::class);
+    }
+
+    public function voucherRedemption() // opsional, jika dipakai
+    {
+        return $this->hasOne(\App\Models\VoucherRedemption::class, 'order_id');
+    }
+
+    // app/Models/SaleItem.php
+    public function product()
+    {
+        return $this->belongsTo(\App\Models\Product::class, 'product_id', 'id');
+    }
+
 
 }

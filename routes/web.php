@@ -17,6 +17,8 @@ use App\Http\Controllers\Admin\VoucherController;
 use App\Http\Controllers\Admin\DiscountSchemeController;
 use App\Http\Controllers\Admin\DiscountTierController;
 use App\Http\Controllers\User\CheckoutController;
+use App\Http\Controllers\Admin\TaxController;
+use App\Http\Controllers\User\TaxInfoController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -71,7 +73,18 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::post('/admin/discounts/{scheme}/tiers', [DiscountTierController::class, 'store'])->name('admin.tiers.store');
     Route::put('/admin/tiers/{tier}', [DiscountTierController::class, 'update'])->name('admin.tiers.update');
     Route::delete('/admin/tiers/{tier}', [DiscountTierController::class, 'destroy'])->name('admin.tiers.destroy');
+
+
 });
+
+// routes/web.php
+Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/transactions', [\App\Http\Controllers\Admin\TransactionController::class, 'index'])->name('transactions.index');
+    Route::get('/transactions/{sale}', [\App\Http\Controllers\Admin\TransactionController::class, 'show'])->name('transactions.show');
+    Route::get('/tax', [TaxController::class, 'edit'])->name('tax.edit');
+    Route::post('/tax', [TaxController::class, 'update'])->name('tax.update');
+});
+
 
 /*
 |--------------------------------------------------------------------------
@@ -123,3 +136,10 @@ Route::middleware(['auth'])->group(function () {
 
 });
 
+Route::middleware(['auth'])->prefix('user')->name('user.')->group(function () {
+    Route::get('/history', [HistoryController::class, 'index'])->name('history.index');
+    Route::get('/history/{sale}', [HistoryController::class, 'show'])
+        ->whereNumber('sale')
+        ->name('history.show');
+    Route::get('/pos/tax', [TaxInfoController::class, 'show'])->name('pos.tax.show');
+});
